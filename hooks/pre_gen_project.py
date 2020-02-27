@@ -77,6 +77,6 @@ def main():
 
 if __name__ == "__main__":
     okay = main()
-    if not okay():
+    if not okay:
         # exits with status 1 to indicate failure
         sys.exit(1)
