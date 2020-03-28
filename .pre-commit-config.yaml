@@ -16,6 +16,7 @@ repos:
   - repo: git://github.com/pre-commit/pre-commit-hooks
     rev: v2.5.0
     hooks:
+      - id: requirements-txt-fixer
       - id: check-json
       - id: pretty-format-json
         args: ["--autofix"]
