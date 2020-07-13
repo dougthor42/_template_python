@@ -11,7 +11,7 @@ from pathlib import Path
 __all__ = [
     "__author__",
     "__author_email__",
-    "__maintainer_email__",
+    "__maintainer__",
     "__maintainer_email__",
     "__license__",
     "__version__",
