@@ -23,3 +23,17 @@ I've opted to put everything within a `src` dir only.
 
 So all code and tests can be found in `src`. The top-level `create_project.py`
 is only to keep the Usage simple (`python create_project.py`).
+
+
+### Testing
+
+Tests are run with:
+
+```
+pytest src/
+```
+
+Note: `setup.py` specifies the
+[`testpaths`](https://docs.pytest.org/en/latest/reference.html#confval-testpaths)
+option which tells pytest to only look for tests in `src/`. Not setting this
+option causes pytest to find tests in `{{cookiecutter.project_slug}}/`.
