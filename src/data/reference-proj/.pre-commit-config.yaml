@@ -7,6 +7,11 @@ repos:
         name: Reorder Python Imports (src, tests)
         args: ["--application-directories", ".:src:tests"]
 
+  - repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.6.0
+    hooks:
+      - id: python-check-blanket-noqa
+
   - repo: https://github.com/psf/black
     rev: 19.10b0
     hooks:
