@@ -10,8 +10,21 @@ This repo is my generic template for python projects.
 3.  Install requirements: `pip install -r requirements.txt`
     +   Note: this installs dev requirements too, but you don't need to worry
         about that.
-4.  Run `create_project.py`
+4.  Run `python create_project.py /path/to/dir`
 5.  Answer the questions.
+
+
+**Note:** The path listed in step for should *not* include the project name.
+A new folder will be made for the project, so you'll end up with:
+
+```
+/path/to/dir/
+  project_name/
+    src/
+      package_name/
+    README.md
+    ...
+```
 
 
 ## Development Notes
