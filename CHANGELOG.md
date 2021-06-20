@@ -6,6 +6,7 @@ thing as the git commit history.
 
 ## 2021-06-20
 + Updated `py` version. #9.
++ Update `requests` and `urllib3` used by main project. (#10)
 
 
 ## 2021-04-08
