@@ -43,10 +43,14 @@ is only to keep the Usage simple (`python create_project.py`).
 Tests are run with:
 
 ```
-pytest src/
+pytest
 ```
 
-Note: `setup.py` specifies the
-[`testpaths`](https://docs.pytest.org/en/latest/reference.html#confval-testpaths)
-option which tells pytest to only look for tests in `src/`. Not setting this
-option causes pytest to find tests in `{{cookiecutter.project_slug}}/`.
+Note: `setup.cfg` specifies two values so that the above command can be simple:
+
++ [`testpaths`](https://docs.pytest.org/en/latest/reference.html#confval-testpaths)
+  + This tells pytest to only look for tests in `tests/`. Not setting this
+    option causes pytest to find tests in `{{cookiecutter.project_slug}}/`.
++ [`norecursedirs`](https://docs.pytest.org/en/latest/reference/reference.html#confval-norecursedirs)
+  + This prevents test files within our golden reference project from being
+    found and run.
