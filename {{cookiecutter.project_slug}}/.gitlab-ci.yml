@@ -1,0 +1,21 @@
+# A basic CI file for GitLab.
+#
+# It assumes the use of a CI Runner name 'docker', which uses the Docker
+# executor.
+
+stages:
+  - test
+
+image: python:3.6.9-alpine3.10
+
+run_tests:
+  stage: test
+  tags:
+    - docker
+  before_script:
+    - pip install --upgrade pip setuptools wheel
+    - pip install -r requirements.txt
+    - pip install -r requirements-dev.txt
+    - pip install -e .
+  script:
+    - pytest
