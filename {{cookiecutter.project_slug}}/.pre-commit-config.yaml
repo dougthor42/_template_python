@@ -37,6 +37,13 @@ repos:
       - id: blacken-docs
         additional_dependencies: ["black==19.10b0"]
 
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.26.1
+    hooks:
+      - id: yamllint
+        name: Yaml Lint
+        verbose: true
+
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.9
     hooks:
