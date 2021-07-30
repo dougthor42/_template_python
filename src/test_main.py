@@ -5,10 +5,37 @@ import difflib
 import os
 from pathlib import Path
 
+import pytest
 from click.testing import CliRunner
 
 from . import DATA_DIR
 from . import main
+
+
+@pytest.fixture
+def extra_context():
+    slug = "reference-proj"
+    descr = "A reference project used for testing my CookieCutter template."
+
+    # Until cookiecutter #1433 gets addressed, we need to send in ALL
+    # values present in cookiecutter.json to --extra-context and also pass
+    # --no-input.
+    # https://github.com/cookiecutter/cookiecutter/issues/1433
+    # --no-input is automatically added by main.main if --extra-context is
+    # given.
+    extra_context = {
+        "author": "pytest",
+        "author_email": "pytest@foo.bar",
+        "create_date": "2020-07-10",
+        "license": "MIT",
+        "package_name": "reference_proj",
+        "project_name": "Reference Project",
+        "project_short_description": descr,
+        "project_slug": slug,
+        "project_url": f"https://foo.bar",
+    }
+
+    yield extra_context
 
 
 def _all_files_relative(path):
@@ -105,27 +132,8 @@ def _assert_dirs_equal(actual, expected):
         assert diff_string == ""
 
 
-def test_main(tmp_path):
-    slug = "reference-proj"
-    descr = "A reference project used for testing my CookieCutter template."
-
-    # Until cookiecutter #1433 gets addressed, we need to send in ALL
-    # values present in cookiecutter.json to --extra-context and also pass
-    # --no-input.
-    # https://github.com/cookiecutter/cookiecutter/issues/1433
-    # --no-input is automatically added by main.main if --extra-context is
-    # given.
-    extra_context = {
-        "author": "pytest",
-        "author_email": "pytest@foo.bar",
-        "create_date": "2020-07-10",
-        "license": "MIT",
-        "package_name": "reference_proj",
-        "project_name": "Reference Project",
-        "project_short_description": descr,
-        "project_slug": slug,
-        "project_url": f"https://foo.bar",
-    }
+def test_main(tmp_path, extra_context):
+    proj_path = tmp_path / extra_context["project_slug"]
 
     args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
 
@@ -135,5 +143,5 @@ def test_main(tmp_path):
     assert result.exit_code == 0
 
     # Check that all our files match the expected.
-    assert (tmp_path / slug).exists()
+    assert proj_path.exists()
     _assert_dirs_equal(actual=tmp_path, expected=DATA_DIR)

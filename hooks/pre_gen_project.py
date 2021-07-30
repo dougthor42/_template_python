@@ -9,7 +9,7 @@ Creating new checks:
 + These functions SHOULD be prefixed with "check_" (similar to how all unit
   tests are "test_foo").
 + The functions MUST return either `True` or `False`.
-+ The functions MUST start with _print_check_name()
++ The functions MUST start with _print_hook_name()
 + The functions MUST run `print(PASS)` on success and `print(FAIL)` on failure.
 
 Add any new checks to the `checks` list in `main()`.
@@ -29,13 +29,13 @@ PASS = Fore.WHITE + Back.GREEN + "Passed" + Style.RESET_ALL
 FAIL = Fore.WHITE + Back.RED + "Failed" + Style.RESET_ALL
 
 
-def _print_check_name():
+def _print_hook_name():
     name = inspect.stack()[1][3]
     print("{:.<50s}".format(name), end="")
 
 
 def check_project_name():
-    _print_check_name()
+    _print_hook_name()
 
     project_name = "{{ cookiecutter.project_name }}"
 
@@ -49,7 +49,7 @@ def check_project_name():
 
 
 def check_package_name():
-    _print_check_name()
+    _print_hook_name()
 
     name = "{{ cookiecutter.package_name }}"
     pattern = r"^[a-zA-Z][_a-zA-Z0-9]+$"
