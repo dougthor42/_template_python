@@ -147,3 +147,66 @@ def test_main(tmp_path, extra_context):
     # Check that all our files match the expected.
     assert proj_path.exists()
     _assert_dirs_equal(actual=tmp_path, expected=DATA_DIR)
+
+
+# Really this is testing the same stuff as `test_main`, but oh well.
+def test_main_no_ci(tmp_path, extra_context):
+    proj_path = tmp_path / extra_context["project_slug"]
+
+    extra_context["create_ci_file"] = "n"
+
+    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+
+    runner = CliRunner()
+    result = runner.invoke(main.main, args)
+
+    assert result.exit_code == 0
+
+    # No CI files should exist
+    for fp in (".github", ".gitlab-ci.yml"):
+        ci_file = proj_path / fp
+        assert not ci_file.exists()
+
+
+def test_main_github_ci(tmp_path, extra_context):
+    proj_path = tmp_path / extra_context["project_slug"]
+
+    extra_context["project_host"] = "GitHub"
+    extra_context["create_ci_file"] = "y"
+
+    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+
+    runner = CliRunner()
+    result = runner.invoke(main.main, args)
+
+    assert result.exit_code == 0
+
+    # The .github directory should exist
+    fp = proj_path / ".github"
+    assert fp.exists()
+    assert fp.is_dir()
+
+    # And all other CI files should not.
+    assert not (proj_path / ".gitlab_ci.yml").exists()
+
+
+def test_main_gitlab_ci(tmp_path, extra_context):
+    proj_path = tmp_path / extra_context["project_slug"]
+
+    extra_context["project_host"] = "GitLab"
+    extra_context["create_ci_file"] = "y"
+
+    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+
+    runner = CliRunner()
+    result = runner.invoke(main.main, args)
+
+    assert result.exit_code == 0
+
+    # The .gitlab-ci.yml directory should exist
+    fp = proj_path / ".gitlab-ci.yml"
+    assert fp.exists()
+    assert fp.is_file()
+
+    # And all other CI files should not.
+    assert not (proj_path / ".github").exists()
