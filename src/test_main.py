@@ -33,6 +33,8 @@ def extra_context():
         "project_short_description": descr,
         "project_slug": slug,
         "project_url": f"https://foo.bar",
+        "project_host": "GitHub",
+        "create_ci_file": "n",
     }
 
     yield extra_context
