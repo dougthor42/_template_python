@@ -1,5 +1,7 @@
+# A very basic Github Workflow.
+
 # This workflow will install Python dependencies, run tests and lint with a
-# single version of Python
+# single version of Python.
 # For more information see:
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
@@ -30,6 +32,8 @@ jobs:
         run: |
           pip install --upgrade pip setuptools wheel
           pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+          pip install -e .
 
       - name: Run tests
         run: |

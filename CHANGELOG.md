@@ -8,6 +8,7 @@ thing as the git commit history.
 + Added `yamllint` to the template's pre-commit-config.yaml. (#16)
   + And also to the main project (#21)
 + Refactored tests a bit so that adding future tests is easier.
++ Added option to include CI files for either GitHub or GitLab. (#17)
 
 
 ## 2021-07-08
