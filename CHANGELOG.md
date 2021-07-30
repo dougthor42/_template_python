@@ -6,6 +6,7 @@ thing as the git commit history.
 
 ## 2021-07-30
 + Added `yamllint` to pre-commit-config.yaml. (#16)
++ Refactored tests a bit so that adding future tests is easier.
 
 
 ## 2021-07-08
