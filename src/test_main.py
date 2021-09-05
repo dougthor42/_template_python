@@ -3,6 +3,7 @@
 """
 import difflib
 import os
+import re
 from pathlib import Path
 
 import pytest
@@ -147,6 +148,14 @@ def _assert_dirs_equal(actual, expected):
 def test_pluralize(str, n, want):
     got = main.pluralize(str, n)
     assert got == want
+
+
+def test_get_current_local_commit_info():
+    got = main._get_current_local_commit_info()
+    assert isinstance(got, tuple)
+    assert len(got) == 2
+    hash_regex = r"[0-9a-f]{40}"
+    assert re.fullmatch(hash_regex, got[0])
 
 
 def test_main(tmp_path, extra_context):

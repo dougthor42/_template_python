@@ -3,9 +3,30 @@
 """
 import ast
 import datetime
+import subprocess
+from typing import Tuple
 
 import click
 from cookiecutter.main import cookiecutter
+
+
+def _get_current_local_commit_info() -> Tuple[str, str]:
+    """
+    Get the current local commit information.
+
+    Returns a two-tuple of (hash, datetime).
+    """
+    cmd = ["git", "rev-parse", "HEAD"]
+    # reminder: catpure_output was added in 3.7   :-(
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE)
+    commit_hash = proc.stdout.strip().decode("utf-8")
+
+    # From https://stackoverflow.com/a/51403241/1354930
+    cmd = ["git", "--no-pager", "log", "-1", "--format='%ai'"]
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE)
+    commit_date = proc.stdout.strip().decode("utf-8").strip("'")
+
+    return commit_hash, commit_date
 
 
 def pluralize(s: str, n: int) -> str:
