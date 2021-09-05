@@ -8,6 +8,17 @@ import click
 from cookiecutter.main import cookiecutter
 
 
+def pluralize(s: str, n: int) -> str:
+    """
+    Change ``s`` to plural by simply adding "s".
+
+    A very naive function, but suitable in most cases.
+    """
+    if abs(n) != 1:
+        s += "s"
+    return s
+
+
 def _parse_extra_context(ctx, param, value):
     if value is None:
         return value

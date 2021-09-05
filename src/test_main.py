@@ -134,6 +134,21 @@ def _assert_dirs_equal(actual, expected):
         assert diff_string == ""
 
 
+@pytest.mark.parametrize(
+    "str, n, want",
+    [
+        ("commit", 1, "commit"),
+        ("commit", -1, "commit"),
+        ("commit", 2, "commits"),
+        ("commit", -2, "commits"),
+        ("foobar", 0, "foobars"),
+    ],
+)
+def test_pluralize(str, n, want):
+    got = main.pluralize(str, n)
+    assert got == want
+
+
 def test_main(tmp_path, extra_context):
     proj_path = tmp_path / extra_context["project_slug"]
 
