@@ -85,6 +85,39 @@ def pluralize(s: str, n: int) -> str:
     return s
 
 
+def _fix_timestamp(ts: str) -> str:
+    """
+    Fix the formatting on timestamps to be uniform.
+
+    We know that ``ts`` will only come in two flavors::
+
+       2021-09-05 11:43:40 -0700   # from _get_current_local_commit_info, aware
+       2021-07-30T20:57:11Z        # from _get_current_remote_commit_info, naive
+
+    So we unify them into one by parsing both into a datetime object and
+    then re-formatting them.
+    """
+    fmts = ["%Y-%m-%d %H:%M:%S %z", "%Y-%m-%dT%H:%M:%SZ"]
+    for fmt in fmts:
+        try:
+            dt = datetime.datetime.strptime(ts, fmt)
+            break
+        except ValueError:
+            continue
+    else:
+        raise ValueError(f"`{ts}` does not match any of the accepted datetime formats.")
+
+    # Convert everything to UTC
+    if ts.endswith("Z"):
+        # Strptime will return a naive datetime object in this case, so we
+        # have to force it to be aware with timezone = utc.
+        dt = dt.replace(tzinfo=datetime.timezone.utc)
+
+    dt = dt.astimezone(datetime.timezone.utc)
+
+    return dt.isoformat(sep=" ")
+
+
 def _parse_extra_context(ctx, param, value):
     if value is None:
         return value

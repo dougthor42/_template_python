@@ -223,6 +223,33 @@ def test_get_diff_total_commits_raises(monkeypatch):
         main._get_diff_total_commits("foo", "111", "222")
 
 
+@pytest.mark.parametrize(
+    "ts, want",
+    [
+        ("2021-09-05 11:43:40 -0700", "2021-09-05 18:43:40+00:00"),
+        ("2021-07-30T20:57:11Z", "2021-07-30 20:57:11+00:00"),
+    ],
+)
+def test_fix_timestamp(ts, want):
+    got = main._fix_timestamp(ts)
+    assert got == want
+
+
+@pytest.mark.parametrize(
+    "ts",
+    [
+        "2021-09-05T11:43:40+0900",  # has "T", no space before offset
+        "2021-09-05T11:43:21 -0400",  # has "T"
+        "1999-01-03 20:43:19",  # no offset
+        "1999-01-03",
+        "2021-03-06 12:34:12+0400",  # no space before offset
+    ],
+)
+def test_fix_timestamp_raises(ts):
+    with pytest.raises(ValueError):
+        main._fix_timestamp(ts)
+
+
 def test_main(tmp_path, extra_context):
     proj_path = tmp_path / extra_context["project_slug"]
 
