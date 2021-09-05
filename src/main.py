@@ -7,6 +7,7 @@ import subprocess
 from typing import Tuple
 
 import click
+import requests
 from cookiecutter.main import cookiecutter
 
 
@@ -25,6 +26,25 @@ def _get_current_local_commit_info() -> Tuple[str, str]:
     cmd = ["git", "--no-pager", "log", "-1", "--format='%ai'"]
     proc = subprocess.run(cmd, stdout=subprocess.PIPE)
     commit_date = proc.stdout.strip().decode("utf-8").strip("'")
+
+    return commit_hash, commit_date
+
+
+def _get_current_remote_commit_info(api_base_url: str) -> Tuple[str, str]:
+    """
+    Get the current remote repositiory's latest commit information.
+
+    Returns a 2-tuple of (commit_hash, commit_date)..
+    """
+    # Note: We intentionally do not use `git fetch` because I don't want
+    # to make any changes whatsoever to the user's local repo. So instead
+    # use the github api.
+
+    resp = requests.get(api_base_url + "/commits/master")
+    json = resp.json()
+
+    commit_hash = json["sha"]
+    commit_date = json["commit"]["author"]["date"]
 
     return commit_hash, commit_date
 

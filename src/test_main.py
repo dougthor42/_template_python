@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 
 import pytest
+import requests
 from click.testing import CliRunner
 
 from . import DATA_DIR
@@ -152,6 +153,33 @@ def test_pluralize(str, n, want):
 
 def test_get_current_local_commit_info():
     got = main._get_current_local_commit_info()
+    assert isinstance(got, tuple)
+    assert len(got) == 2
+    hash_regex = r"[0-9a-f]{40}"
+    assert re.fullmatch(hash_regex, got[0])
+
+
+def test_get_current_remote_commit_info(monkeypatch):
+    # Set up some mocking first.
+    # See https://docs.pytest.org/en/6.2.x/monkeypatch.html
+    class MockResponse:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            rv = {
+                "sha": "28d8d1b4e5134676ebe94e9c014a497221370e8b",
+                "commit": {"author": {"date": "2021-09-05T13:24:37Z"}},
+            }
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    # Now we can actually test
+    got = main._get_current_remote_commit_info("foo")
     assert isinstance(got, tuple)
     assert len(got) == 2
     hash_regex = r"[0-9a-f]{40}"
