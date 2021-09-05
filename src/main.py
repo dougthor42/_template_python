@@ -134,6 +134,9 @@ def _check_repo() -> None:
     local_hash, local_date = _get_current_local_commit_info()
     remote_hash, remote_date = _get_current_remote_commit_info(remote_url)
 
+    if local_hash == remote_hash:
+        return
+
     local_date = _fix_timestamp(local_date)
     remote_date = _fix_timestamp(remote_date)
 
