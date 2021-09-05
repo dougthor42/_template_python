@@ -11,6 +11,10 @@ import requests
 from cookiecutter.main import cookiecutter
 
 
+class WebApiError(Exception):
+    pass
+
+
 def _get_current_local_commit_info() -> Tuple[str, str]:
     """
     Get the current local commit information.
@@ -47,6 +51,27 @@ def _get_current_remote_commit_info(api_base_url: str) -> Tuple[str, str]:
     commit_date = json["commit"]["author"]["date"]
 
     return commit_hash, commit_date
+
+
+def _get_diff_total_commits(
+    api_base_url: str, local_hash: str, remote_hash: str
+) -> int:
+    compare = f"/compare/{local_hash}...{remote_hash}"
+
+    resp = requests.get(api_base_url + compare)
+
+    if resp.status_code == 404:
+        raise WebApiError(
+            f"Got 404 for {api_base_url}{compare}. Likely cause"
+            f"is that {local_hash} does not exist in the remote (eg: the"
+            "user has local commits present)."
+        )
+
+    json = resp.json()
+
+    commits_ahead = json["total_commits"]
+
+    return commits_ahead
 
 
 def pluralize(s: str, n: int) -> str:

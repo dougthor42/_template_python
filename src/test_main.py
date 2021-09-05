@@ -186,6 +186,43 @@ def test_get_current_remote_commit_info(monkeypatch):
     assert re.fullmatch(hash_regex, got[0])
 
 
+# TODO: This test is, well, pointless.
+def test_get_diff_total_commits(monkeypatch):
+    class MockResponse:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            rv = {"total_commits": 5}
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    got = main._get_diff_total_commits("foo", "111", "222")
+    assert got == 5
+
+
+def test_get_diff_total_commits_raises(monkeypatch):
+    class MockResponse:
+        status_code = 404
+
+        @staticmethod
+        def json():
+            rv = {"total_commits": 5}
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    with pytest.raises(main.WebApiError):
+        main._get_diff_total_commits("foo", "111", "222")
+
+
 def test_main(tmp_path, extra_context):
     proj_path = tmp_path / extra_context["project_slug"]
 
