@@ -3,9 +3,11 @@
 """
 import difflib
 import os
+import re
 from pathlib import Path
 
 import pytest
+import requests
 from click.testing import CliRunner
 
 from . import DATA_DIR
@@ -132,6 +134,120 @@ def _assert_dirs_equal(actual, expected):
         # This is guarenteed to be false and is only used to (a) ensure the
         # test fails and (b) show the diff.
         assert diff_string == ""
+
+
+@pytest.mark.parametrize(
+    "str, n, want",
+    [
+        ("commit", 1, "commit"),
+        ("commit", -1, "commit"),
+        ("commit", 2, "commits"),
+        ("commit", -2, "commits"),
+        ("foobar", 0, "foobars"),
+    ],
+)
+def test_pluralize(str, n, want):
+    got = main.pluralize(str, n)
+    assert got == want
+
+
+def test_get_current_local_commit_info():
+    got = main._get_current_local_commit_info()
+    assert isinstance(got, tuple)
+    assert len(got) == 2
+    hash_regex = r"[0-9a-f]{40}"
+    assert re.fullmatch(hash_regex, got[0])
+
+
+def test_get_current_remote_commit_info(monkeypatch):
+    # Set up some mocking first.
+    # See https://docs.pytest.org/en/6.2.x/monkeypatch.html
+    class MockResponse:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            rv = {
+                "sha": "28d8d1b4e5134676ebe94e9c014a497221370e8b",
+                "commit": {"author": {"date": "2021-09-05T13:24:37Z"}},
+            }
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    # Now we can actually test
+    got = main._get_current_remote_commit_info("foo")
+    assert isinstance(got, tuple)
+    assert len(got) == 2
+    hash_regex = r"[0-9a-f]{40}"
+    assert re.fullmatch(hash_regex, got[0])
+
+
+# TODO: This test is, well, pointless.
+def test_get_diff_total_commits(monkeypatch):
+    class MockResponse:
+        status_code = 200
+
+        @staticmethod
+        def json():
+            rv = {"total_commits": 5}
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    got = main._get_diff_total_commits("foo", "111", "222")
+    assert got == 5
+
+
+def test_get_diff_total_commits_raises(monkeypatch):
+    class MockResponse:
+        status_code = 404
+
+        @staticmethod
+        def json():
+            rv = {"total_commits": 5}
+            return rv
+
+    def mock_get(*args, **kwargs):
+        return MockResponse()
+
+    monkeypatch.setattr(requests, "get", mock_get)
+
+    with pytest.raises(main.WebApiError):
+        main._get_diff_total_commits("foo", "111", "222")
+
+
+@pytest.mark.parametrize(
+    "ts, want",
+    [
+        ("2021-09-05 11:43:40 -0700", "2021-09-05 18:43:40+00:00"),
+        ("2021-07-30T20:57:11Z", "2021-07-30 20:57:11+00:00"),
+    ],
+)
+def test_fix_timestamp(ts, want):
+    got = main._fix_timestamp(ts)
+    assert got == want
+
+
+@pytest.mark.parametrize(
+    "ts",
+    [
+        "2021-09-05T11:43:40+0900",  # has "T", no space before offset
+        "2021-09-05T11:43:21 -0400",  # has "T"
+        "1999-01-03 20:43:19",  # no offset
+        "1999-01-03",
+        "2021-03-06 12:34:12+0400",  # no space before offset
+    ],
+)
+def test_fix_timestamp_raises(ts):
+    with pytest.raises(ValueError):
+        main._fix_timestamp(ts)
 
 
 def test_main(tmp_path, extra_context):
