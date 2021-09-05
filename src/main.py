@@ -4,11 +4,14 @@
 import ast
 import datetime
 import subprocess
+from functools import partial
 from typing import Tuple
 
 import click
 import requests
 from cookiecutter.main import cookiecutter
+
+echo = partial(click.secho, fg="yellow", bold=True)
 
 
 class WebApiError(Exception):
@@ -118,6 +121,41 @@ def _fix_timestamp(ts: str) -> str:
     return dt.isoformat(sep=" ")
 
 
+def _check_repo() -> None:
+    """
+    Check what version the user has against remote and warn if an update is
+    available.
+
+    This is a fairly simple and naive version check. If the user has local
+    commits, then we don't display the the behind/ahead commit count.
+    """
+    remote_url = "https://api.github.com/repos/dougthor42/_template_python"
+
+    local_hash, local_date = _get_current_local_commit_info()
+    remote_hash, remote_date = _get_current_remote_commit_info(remote_url)
+
+    local_date = _fix_timestamp(local_date)
+    remote_date = _fix_timestamp(remote_date)
+
+    # Figure out how many commits we are behind.
+    remote_msg = f"  Remote: {remote_hash:<10} / {remote_date}"
+    try:
+        commit_qty = _get_diff_total_commits(remote_url, local_hash, remote_hash)
+        commits_ahead = str(commit_qty) + " " + pluralize("commit", commit_qty)
+
+        remote_msg += f" / {commits_ahead} ahead"
+    except WebApiError:
+        # We can't figure out how many commits we are ahead, likely because
+        # the user has local commits that don't exist in the remote.
+        pass
+
+    # print the warning
+    echo("A new version of this template is available.")
+    echo(f"  Local:  {local_hash:<10} / {local_date}")
+    echo(remote_msg)
+    echo("It's recommended that you abort (CTRL-C) and then run `git pull`.")
+
+
 def _parse_extra_context(ctx, param, value):
     if value is None:
         return value
@@ -153,6 +191,8 @@ def main(outdir, extra_context):
     Note that OUTDIR should *not* contain the project name - CookieCutter
     will create the project directory automatically.
     """
+    _check_repo()
+
     _default_extra_context = {"create_date": datetime.date.today().isoformat()}
     passed_extra_context = _default_extra_context
     no_input = False
