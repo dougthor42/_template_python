@@ -2,18 +2,21 @@
 """
 """
 from pathlib import Path
+from typing import Any
+from typing import Dict
+from typing import List
 
 from setuptools import find_packages
 from setuptools import setup
 
 # Read the `__about__.py` file.
-about = dict()
+about: Dict[str, Any] = dict()
 about_file = Path.cwd() / "src" / "reference_proj" / "__about__.py"
 with open(about_file) as openf:
     exec(openf.read(), about)
 
-INSTALL_REQUIRES = []
-CLASSIFIERS = []
+INSTALL_REQUIRES: List[str] = []
+CLASSIFIERS: List[str] = []
 
 setup(
     name=about["__package_name__"],
