@@ -6,6 +6,7 @@ thing as the git commit history.
 
 ## 2022-04-04
 + Added a `--version-check / --no-version-check` arg to the CLI. (#28)
++ Projects can now be made with a CLI entry point. (#13)
 
 
 ## 2021-09-30

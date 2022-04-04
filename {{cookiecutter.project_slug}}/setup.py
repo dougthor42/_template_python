@@ -17,6 +17,11 @@ with open(about_file) as openf:
 
 INSTALL_REQUIRES: List[str] = []
 CLASSIFIERS: List[str] = []
+{%- if cookiecutter.has_cli != "n" %}
+ENTRY_POINTS: Dict[str, List[str]] = {
+    "console_scripts": "{{cookiecutter.package_name}}": "{{cookiecutter.package_name}}.cli:main"],
+}
+{%- endif %}
 
 setup(
     name=about["__package_name__"],

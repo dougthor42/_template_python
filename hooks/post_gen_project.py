@@ -46,6 +46,15 @@ def remove_file_or_dir(filepath: str):
         raise ValueError(f"The path `{path}` is not a file nor a directory. HOW??")
 
 
+def remove_cli_file():
+    _print_hook_name()
+
+    fp = "src/{{ cookiecutter.package_name }}/cli.py"
+
+    if "{{ cookiecutter.has_cli }}" == "n":
+        remove_file_or_dir(fp)
+
+
 def remove_ci_files():
     _print_hook_name()
 
@@ -72,7 +81,12 @@ def remove_ci_files():
 
 def main():
     print("Running post-generate hooks:")
-    remove_ci_files()
+    results = []
+    actions = [remove_ci_files, remove_cli_file]
+    for action in actions:
+        result = action()
+        results.append(result)
+
     return True
 
 

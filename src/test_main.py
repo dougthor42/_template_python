@@ -350,3 +350,30 @@ def test_main_gitlab_ci(tmp_path, extra_context):
 
     # And all other CI files should not.
     assert not (proj_path / ".github").exists()
+
+
+def test_main_has_cli(tmp_path, extra_context):
+    proj_path = tmp_path / extra_context["project_slug"]
+
+    extra_context["has_cli"] = "y"
+
+    args = [
+        "--no-version-check",
+        str(tmp_path),
+        "--extra-context",
+        f"""{extra_context}""",
+    ]
+
+    runner = CliRunner()
+    result = runner.invoke(main.main, args)
+
+    assert result.exit_code == 0
+
+    # setup.py should define ENTRY_POINTS, which should have a key "console_scripts"
+    assert "ENTRY_POINTS" in open(proj_path / "setup.py", "r").read()
+    assert "console_scripts" in open(proj_path / "setup.py", "r").read()
+
+    # The "srs/<package_name>/cli.py" file should exist
+    fp = proj_path / "src" / extra_context["package_name"] / "cli.py"
+    assert fp.exists()
+    assert fp.is_file()
