@@ -4,6 +4,10 @@ This project doesn't really have releases so... this is really just the same
 thing as the git commit history.
 
 
+## 2022-04-04
++ Added a `--version-check / --no-version-check` arg to the CLI. (#28)
+
+
 ## 2021-09-30
 + Fixed type annotation issues in `setup.py`. (#26)
 
