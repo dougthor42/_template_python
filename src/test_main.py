@@ -253,7 +253,12 @@ def test_fix_timestamp_raises(ts):
 def test_main(tmp_path, extra_context):
     proj_path = tmp_path / extra_context["project_slug"]
 
-    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+    args = [
+        "--no-version-check",
+        str(tmp_path),
+        "--extra-context",
+        f"""{extra_context}""",
+    ]
 
     runner = CliRunner()
     result = runner.invoke(main.main, args)
@@ -271,7 +276,12 @@ def test_main_no_ci(tmp_path, extra_context):
 
     extra_context["create_ci_file"] = "n"
 
-    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+    args = [
+        "--no-version-check",
+        str(tmp_path),
+        "--extra-context",
+        f"""{extra_context}""",
+    ]
 
     runner = CliRunner()
     result = runner.invoke(main.main, args)
@@ -290,7 +300,12 @@ def test_main_github_ci(tmp_path, extra_context):
     extra_context["project_host"] = "GitHub"
     extra_context["create_ci_file"] = "y"
 
-    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+    args = [
+        "--no-version-check",
+        str(tmp_path),
+        "--extra-context",
+        f"""{extra_context}""",
+    ]
 
     runner = CliRunner()
     result = runner.invoke(main.main, args)
@@ -316,7 +331,12 @@ def test_main_gitlab_ci(tmp_path, extra_context):
     extra_context["project_host"] = "GitLab"
     extra_context["create_ci_file"] = "y"
 
-    args = [str(tmp_path), "--extra-context", f"""{extra_context}"""]
+    args = [
+        "--no-version-check",
+        str(tmp_path),
+        "--extra-context",
+        f"""{extra_context}""",
+    ]
 
     runner = CliRunner()
     result = runner.invoke(main.main, args)

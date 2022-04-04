@@ -187,14 +187,21 @@ def _parse_extra_context(ctx, param, value):
     ),
     callback=_parse_extra_context,
 )
-def main(outdir, extra_context):
+@click.option(
+    "--version-check/--no-version-check",
+    is_flag=True,
+    default=True,
+    help="Run a version check against the remote repository.",
+)
+def main(outdir, extra_context, version_check):
     """
     Create a new project in OUTDIR.
 
     Note that OUTDIR should *not* contain the project name - CookieCutter
     will create the project directory automatically.
     """
-    _check_repo()
+    if version_check:
+        _check_repo()
 
     _default_extra_context = {"create_date": datetime.date.today().isoformat()}
     passed_extra_context = _default_extra_context
