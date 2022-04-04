@@ -22,4 +22,4 @@ A reference project used for testing my CookieCutter template.
 
 ## Changelog
 
-See [CHANGELOG.md](.\CHANGELOG.md).
+See [CHANGELOG.md](./CHANGELOG.md).
