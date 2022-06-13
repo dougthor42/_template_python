@@ -6,7 +6,7 @@
 stages:
   - test
 
-image: python:3.6.9-alpine3.10
+image: python:3.8-alpine3.15
 
 run_tests:
   stage: test
