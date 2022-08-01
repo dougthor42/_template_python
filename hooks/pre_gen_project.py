@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Various checks that are run before generating the project (but after the
 user has entered values).
