@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Various checks that are run before generating the project (but after the
 user has entered values).
@@ -63,8 +62,6 @@ def check_package_name():
 
 
 def main():
-    """
-    """
     print("Running pre-generate hooks:")
     results = []
     checks = [check_project_name, check_package_name]
