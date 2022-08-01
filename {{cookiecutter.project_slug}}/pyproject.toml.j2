@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "{{ cookiecutter.package_name }}"
+version = "0.0.0"
+description = "{{ cookiecutter.project_short_description }}"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "{{ cookiecutter.author }}"},  # so that package core metadata "Author" field gets populated.
+    {name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}"},
+]
+maintainers = []
+keywords = []
+classifiers = []
+dependencies = []
+
+[project.optional-dependencies]
+
+[project.scripts]
+{%- if cookiecutter.has_cli != "n" %}
+"{{ cookiecutter.package_name }}" = "{{ cookiecutter.package_name }}.cli:main"
+{%- endif %}
+
+[project.urls]
+"Source Code" = "{{ cookiecutter.project_url }}"
+"Changelog" = "{{ cookiecutter.project_url }}/blob/master/CHANGELOG.md"
+"Bug Tracker" = "{{ cookiecutter.project_url }}/issues"

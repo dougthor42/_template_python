@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reference_proj"
+version = "0.0.0"
+description = "A reference project used for testing my CookieCutter template."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "pytest"},  # so that package core metadata "Author" field gets populated.
+    {name = "pytest", email = "pytest@foo.bar"},
+]
+maintainers = []
+keywords = []
+classifiers = []
+dependencies = []
+
+[project.optional-dependencies]
+
+[project.scripts]
+
+[project.urls]
+"Source Code" = "https://foo.bar"
+"Changelog" = "https://foo.bar/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://foo.bar/issues"

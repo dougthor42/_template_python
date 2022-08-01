@@ -17,7 +17,8 @@ A reference project used for testing my CookieCutter template.
     2.  `pip install -r requirements.txt -r requirements-dev.txt`
     3.  `pip install -e .`
 6.  Run tests to verify: `pytest`
-7.  Ready to develop
+7.  Install pre-commit hooks: `pre-commit install`
+8.  Ready to develop
 
 
 ## Changelog

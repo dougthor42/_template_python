@@ -368,9 +368,8 @@ def test_main_has_cli(tmp_path, extra_context):
 
     assert result.exit_code == 0
 
-    # setup.py should define ENTRY_POINTS, which should have a key "console_scripts"
-    assert "ENTRY_POINTS" in open(proj_path / "setup.py", "r").read()
-    assert "console_scripts" in open(proj_path / "setup.py", "r").read()
+    # pyproject.toml should define an entry point that ends in ".cli:main"
+    assert ".cli:main" in open(proj_path / "pyproject.toml", "r").read()
 
     # The "srs/<package_name>/cli.py" file should exist
     fp = proj_path / "src" / extra_context["package_name"] / "cli.py"
