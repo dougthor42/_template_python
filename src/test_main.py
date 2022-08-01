@@ -33,7 +33,7 @@ def extra_context():
         "project_name": "Reference Project",
         "project_short_description": descr,
         "project_slug": slug,
-        "project_url": f"https://foo.bar",
+        "project_url": "https://foo.bar",
         "project_host": "GitHub",
         "create_ci_file": "n",
     }
