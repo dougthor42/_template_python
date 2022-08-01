@@ -81,10 +81,22 @@ def remove_ci_files():
     print("Done")
 
 
+def rename_pyproject_template():
+    _print_hook_name()
+
+    # Rename the pyproject.toml.j2 file to just .toml
+    # We needed to add the .j2 extension so that `black` would not try to read
+    # it as a config file during pre-commit (it fails to parse because of the
+    # jinja2 templating code).
+    pyproject_file = PROJECT_DIR / "pyproject.toml.j2"
+    pyproject_file.rename(PROJECT_DIR / "pyproject.toml")
+    print("Done")
+
+
 def main():
     print("Running post-generate hooks:")
     results = []
-    actions = [remove_ci_files, remove_cli_file]
+    actions = [remove_ci_files, remove_cli_file, rename_pyproject_template]
     for action in actions:
         result = action()
         results.append(result)
