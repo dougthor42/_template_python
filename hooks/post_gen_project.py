@@ -52,6 +52,7 @@ def remove_cli_file():
 
     if "{{ cookiecutter.has_cli }}" == "n":
         remove_file_or_dir(fp)
+    print("Done")
 
 
 def remove_ci_files():
@@ -63,6 +64,7 @@ def remove_ci_files():
     if "{{ cookiecutter.create_ci_file }}" == "n":
         for file_or_dir in CI_FILES.values():
             remove_file_or_dir(file_or_dir)
+        print("Done")
         return
 
     # User wants a CI file.
@@ -76,6 +78,7 @@ def remove_ci_files():
     # Remove all the ones we're **not** using.
     for file_or_dir in remove_items.values():
         remove_file_or_dir(file_or_dir)
+    print("Done")
 
 
 def main():
