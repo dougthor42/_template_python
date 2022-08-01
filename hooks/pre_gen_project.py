@@ -62,8 +62,6 @@ def check_package_name():
 
 
 def main():
-    """
-    """
     print("Running pre-generate hooks:")
     results = []
     checks = [check_project_name, check_package_name]
