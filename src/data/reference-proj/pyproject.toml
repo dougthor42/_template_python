@@ -7,7 +7,7 @@ name = "reference_proj"
 version = "0.0.0"
 description = "A reference project used for testing my CookieCutter template."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "pytest"},  # so that package core metadata "Author" field gets populated.
