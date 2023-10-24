@@ -11,7 +11,7 @@ repos:
     rev: 22.6.0
     hooks:
       - id: black
-        language_version: python3.8
+        language_version: python3.10
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
@@ -39,7 +39,7 @@ repos:
         name: Yaml Lint
         verbose: true
 
-  - repo: https://gitlab.com/pycqa/flake8
+  - repo: https://github.com/pycqa/flake8
     rev: 4.0.1
     hooks:
       - id: flake8
