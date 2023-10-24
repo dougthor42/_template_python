@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "_template_python"
+version = "0.0.0"
+description = "My Python project template."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [
+    {name = "Douglas Thor"},  # so that package core metadata "Author" field gets populated.
+    {name = "Douglas Thor", email = "doug.thor@gmail.com"},
+]
+maintainers = []
+keywords = []
+classifiers = []
+dependencies = [
+    "cookiecutter>=2.1.1<3.0.0",
+]
+
+[project.optional-dependencies]
+
+[project.urls]
+"Source Code" = "https://github.com/dougthor42/_template_python"
+"Changelog" = "https://github.com/dougthor42/_template_python/blob/master/CHANGELOG.md"
+"Bug Tracker" = "https://github.com/dougthor42/_template_python/issues"
+
+[tool.flake8]
+max-line-length = 88
+ignore = W503, E203, E266
+# W503: line breaks before binary operator. Not pep8-compliant
+# E203: whitespace before ':'. Not pep8-compliant
+# E266: Too many leading '#' before comment
+
+[tool.pytest.ini_options]
+addopts = "-ra"
+testpaths = [
+    "src",
+]
+# Our golden master directory structure has tests in it, and we don't want
+# pytest to discover those (which ends up making a __pycache__ dir and mucking
+# things up)
+norecursedirs = [
+    "data/reference-proj",
+]
+
+[tool.coverage.run]
+branch = True
