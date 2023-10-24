@@ -8,6 +8,7 @@ thing as the git commit history.
 + Updated template to use Python 3.10.
 + Updates to CI, both the main project and the template itself.
 + Moved config to pyproject.toml
++ Replaced `flake8` with `ruff` in project and in template.
 
 
 ## 2022-04-04
