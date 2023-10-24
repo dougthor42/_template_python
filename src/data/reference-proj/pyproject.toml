@@ -27,6 +27,12 @@ dependencies = []
 "Changelog" = "https://foo.bar/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://foo.bar/issues"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
 [tool.mypy]
 show_error_codes = true
 
