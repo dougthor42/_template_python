@@ -4,8 +4,9 @@ This project doesn't really have releases so... this is really just the same
 thing as the git commit history.
 
 
-# 2023-10-23
+# 2023-10-24
 + Updated template to use Python 3.10.
++ Updates to CI, both the main project and the template itself.
 
 
 ## 2022-04-04
