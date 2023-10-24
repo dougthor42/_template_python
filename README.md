@@ -7,9 +7,8 @@ This repo is my generic template for python projects.
 
 1.  Clone this repository.
 2.  Make a virtual environment.
-3.  Install requirements: `pip install -r requirements.txt`
-    +   Note: this installs dev requirements too, but you don't need to worry
-        about that.
+3.  Install it: `pip install -e .`
+    +   If you want to do development: `pip install -e .[dev]`
 4.  Run `python create_project.py /path/to/dir`
 5.  Answer the questions.
 
@@ -46,7 +45,7 @@ Tests are run with:
 pytest src/
 ```
 
-Note: `setup.py` specifies the
+Note: `pyproject.toml` specifies the
 [`testpaths`](https://docs.pytest.org/en/latest/reference.html#confval-testpaths)
 option which tells pytest to only look for tests in `src/`. Not setting this
 option causes pytest to find tests in `{{cookiecutter.project_slug}}/`.
