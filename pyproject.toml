@@ -27,13 +27,6 @@ dependencies = [
 "Changelog" = "https://github.com/dougthor42/_template_python/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://github.com/dougthor42/_template_python/issues"
 
-[tool.flake8]
-max-line-length = 88
-ignore = W503, E203, E266
-# W503: line breaks before binary operator. Not pep8-compliant
-# E203: whitespace before ':'. Not pep8-compliant
-# E266: Too many leading '#' before comment
-
 [tool.pytest.ini_options]
 addopts = "-ra"
 testpaths = [
