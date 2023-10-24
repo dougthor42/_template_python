@@ -26,3 +26,6 @@ dependencies = []
 "Source Code" = "https://foo.bar"
 "Changelog" = "https://foo.bar/blob/master/CHANGELOG.md"
 "Bug Tracker" = "https://foo.bar/issues"
+
+[tool.ruff]
+target-version = "py310"
