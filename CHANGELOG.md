@@ -10,6 +10,7 @@ thing as the git commit history.
 + Moved config to pyproject.toml
 + Replaced `flake8` with `ruff` in project and in template.
 + Updated depencencies for the main part (not the template).
++ Moved template's config to pyproject.toml, too.
 
 
 ## 2022-04-04
