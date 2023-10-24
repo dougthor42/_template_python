@@ -5,6 +5,7 @@ cfgv==3.4.0
 chardet==5.2.0
 charset-normalizer==3.3.1
 click==8.1.7
+colorama==0.4.6
 cookiecutter==2.4.0
 distlib==0.3.7
 exceptiongroup==1.1.3
