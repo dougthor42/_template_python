@@ -78,4 +78,4 @@ jobs:
       - name: Check status of all jobs.
         uses: re-actors/alls-green@v1.2.2
         with:
-          jobs: ${{ toJSON(needs) }}
+          jobs: {{ '${{ toJSON(needs) }}' }}
